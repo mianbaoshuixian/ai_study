@@ -91,4 +91,14 @@ output, hn = rnn(packed)
 （课堂上或练习后填写）
 
 ---
+embedding.weight 本身就是一个完整的词向量表
+nn.Embedding(vocab_size, embed_dim) = 创建一张 vocab_size 行 × embed_dim 列 的可学习表格
+
+输入：词索引（0~vocab_size-1）
+输出：查表，取对应行的 embed_dim 维向量
+
 特征向量是"实数数据"，可以做运算；整数索引是"编号"，只用来查表。Embedding 的 weight 是 (vocab, dim) 的表，embedding(idx) 就是 weight[idx] ——本质上就是 fancy indexing 取行。
+
+embedding 的 forward 接收的是一个 2D（或 1D）tensor，里面装的是整数词索引。
+
+Embedding 不关心你传的是 batch 还是 seq_len，它只看到"一堆要查的索引"。输入 shape 是什么样，输出就在最后多一维 embed_dim。
