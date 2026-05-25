@@ -102,3 +102,15 @@ nn.Embedding(vocab_size, embed_dim) = 创建一张 vocab_size 行 × embed_dim �
 embedding 的 forward 接收的是一个 2D（或 1D）tensor，里面装的是整数词索引。
 
 Embedding 不关心你传的是 batch 还是 seq_len，它只看到"一堆要查的索引"。输入 shape 是什么样，输出就在最后多一维 embed_dim。
+关键直觉: 公式 $h_t = \tanh(W_{xh} x_t + W_{hh} h_{t-1} + b)$ 描述的是一个时间步内的事情,所以输入输出都没有 seq_len。
+
+output.shape: (batch, seq_len, hidden_size)。
+
+hn.shape: (num_layers * num_directions, batch, hidden_size)
+
+模型架构层面
+  ├─ MLP    全连接, 处理固定长度输入
+  ├─ CNN    卷积, 擅长图像
+  ├─ RNN    循环, 擅长序列 ← 你在这里
+  ├─ LSTM/GRU  RNN 的改进版
+  └─ Transformer  自注意力, 当前最强
