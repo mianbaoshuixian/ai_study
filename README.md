@@ -12,8 +12,8 @@
 | U03 | NumPy + 张量思维 | NumPy 实现线性回归 | 🚀 进行中 |
 | U04 | PyTorch 基础 + autograd | PyTorch 重写 U03 | ⏳ |
 | U05 | MLP 实战：MNIST 分类 | 测试准确率 >95% | ⏳ |
-| U06 | 手写 RNNCell + 序列思维 | RNN 做累加和任务 | ⏳ |
-| U07 | GRU 原理 + 公式推导 | 默写 4 个公式并解释 | ⏳ |
+| U06 | 手写 RNNCell + 序列思维 | RNN 做累加和任务 | ✅ 已完成 |
+| U07 | GRU 原理 + 公式推导 | 默写 4 个公式并解释 | 🚀 进行中 |
 | U08 | Seq2Seq + Teacher Forcing | 数字反转任务跑通 | ⏳ |
 | U09 | 中文数据处理 | 构建中英训练 batch | ⏳ |
 | U10 | 翻译 Baseline（无 Attention） | 能翻短句 | ⏳ |

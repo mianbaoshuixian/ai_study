@@ -114,3 +114,11 @@ hn.shape: (num_layers * num_directions, batch, hidden_size)
   ├─ RNN    循环, 擅长序列 ← 你在这里
   ├─ LSTM/GRU  RNN 的改进版
   └─ Transformer  自注意力, 当前最强
+
+LLM ⊂ NLP,LLM 用的是 Transformer 架构
+
+
+为什么训练时要 Dropout，推理时不要
+训练时：Dropout 随机关掉一些神经元 → 模型不能过度依赖某一个特征 → 防止过拟合（正则效果）
+
+推理时：需要稳定、可复现的结果 → 不能让预测一会儿对一会儿错
