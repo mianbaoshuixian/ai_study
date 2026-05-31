@@ -154,3 +154,6 @@ model.train() 做的事：
 model.eval() 做的事：
   1. 让 Dropout 停止工作（所有神经元都在）
   2. 让 BatchNorm 用全局统计量
+
+凡是参与"加权求和"的数值特征，量级不一致就要归一化。 词索引是 ID 不算，树模型按阈值分裂数值大小无关。
+标准顺序：Linear → BatchNorm → Activation → Dropout → Linear → ...
