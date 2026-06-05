@@ -15,7 +15,7 @@
 | U06 | 手写 RNNCell + 序列思维 | RNN 做累加和任务 | ✅ 已完成 |
 | U07 | GRU 原理 + 公式推导 | 默写 4 个公式并解释 | ✅ 已完成 |
 | U08 | Seq2Seq + Teacher Forcing | 数字反转任务跑通 | 🚀 进行中 |
-| U09 | 中文数据处理 | 构建中英训练 batch | ⏳ |
+| U09 | 中文数据处理 | 构建中英训练 batch | 🚀 进行中 |
 | U10 | 翻译 Baseline（无 Attention） | 能翻短句 | ⏳ |
 | U11 | Bahdanau Attention | BLEU 提升 + 热力图 | ⏳ |
 | U12 | 原理复述 + 面试题整理 | 10 分钟讲解录音 | ⏳ |
