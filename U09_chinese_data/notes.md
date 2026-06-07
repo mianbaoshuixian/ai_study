@@ -71,3 +71,7 @@ tgt_out = [   w1, w2, w3, <eos>]    # loss 目标
 ---
 
 ## 9. 我的疑问 / 总结
+一句话提纲（必须能背）
+原始文本 → 分词 → 查 Vocab 转 id → 加 SOS/EOS → Dataset 封单条 → DataLoader 攒 batch + collate_fn 动态 padding 出 (src, src_len, tgt) → Embedding 升维进 Encoder。
+
+这条链路是所有 NLP 任务的通用套路（翻译、分类、生成全都一样），换数据集只换前面 ①②，换任务只换后面的模型，中间的 Dataset/DataLoader 模板基本不动。
