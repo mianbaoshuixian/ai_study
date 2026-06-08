@@ -17,8 +17,18 @@
 | U08 | Seq2Seq + Teacher Forcing | 数字反转任务跑通 | 🚀 进行中 |
 | U09 | 中文数据处理 | 构建中英训练 batch | 🚀 进行中 |
 | U10 | 翻译 Baseline（无 Attention） | 能翻短句 | 🚀 进行中 |
-| U11 | Bahdanau Attention | BLEU 提升 + 热力图 | ⏳ |
+| U11 | Bahdanau Attention | BLEU 提升 + 热力图 | 🚀 进行中 |
 | U12 | 原理复述 + 面试题整理 | 10 分钟讲解录音 | ⏳ |
+
+---
+
+## U11 目录结构
+```
+U11_attention/
+├── lesson.ipynb       # Bahdanau Attention 课程（公式推导、Encoder/Decoder 改造、热力图）
+├── exercises.ipynb    # 手写 Attention 模块、训练 + 画热力图、默写题
+└── notes.md           # 笔记模板
+```
 
 ## 学习原则
 1. **每个练习都手敲**，不复制粘贴
@@ -30,10 +40,17 @@
 ```
 ai_study/
 ├── README.md              # 本文件
-├── U01_python_basics/     # 当前单元
+├── U01_python_basics/
 │   ├── notes.md
 │   ├── ex1_1_count.py
 │   ├── ex1_2_listcomp.py
 │   └── ex1_3_vocab.py
-└── U02_math/ ... (后续按需创建)
+├── U07_gru/
+├── U08_seq2seq/
+├── U10_translation_baseline/
+├── U11_attention/
+│   ├── notes.md
+│   ├── exercises.ipynb
+│   └── lesson.ipynb
+└── U12_review/ ... (后续创建)
 ```
