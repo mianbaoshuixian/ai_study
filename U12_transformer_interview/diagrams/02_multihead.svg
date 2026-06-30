@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="380" viewBox="0 0 760 380" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="758" height="378" fill="#ffffff" stroke="#2f8f3e" stroke-width="2" rx="6"/>
+
+  <rect x="30" y="160" width="90" height="56" fill="#fff3cd" stroke="#caa000" rx="6"/>
+  <text x="75" y="185" text-anchor="middle" font-size="14" fill="#333">输入 X</text>
+  <text x="75" y="205" text-anchor="middle" font-size="11" fill="#777">(n, d_model)</text>
+
+  <!-- heads -->
+  <g>
+    <rect x="180" y="40" width="150" height="46" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+    <text x="255" y="68" text-anchor="middle" font-size="13" fill="#333">head 1 (d_model/h)</text>
+    <rect x="180" y="110" width="150" height="46" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+    <text x="255" y="138" text-anchor="middle" font-size="13" fill="#333">head 2</text>
+    <rect x="180" y="200" width="150" height="46" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+    <text x="255" y="228" text-anchor="middle" font-size="13" fill="#333">...</text>
+    <rect x="180" y="270" width="150" height="46" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+    <text x="255" y="298" text-anchor="middle" font-size="13" fill="#333">head h</text>
+  </g>
+  <line x1="120" y1="180" x2="180" y2="63"  stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="120" y1="184" x2="180" y2="133" stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="120" y1="190" x2="180" y2="223" stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="120" y1="196" x2="180" y2="293" stroke="#555" marker-end="url(#arrow2)"/>
+
+  <text x="255" y="180" text-anchor="middle" font-size="11" fill="#999">每个头独立做 Scaled Dot-Product Attention</text>
+
+  <!-- concat -->
+  <rect x="400" y="150" width="120" height="76" fill="#ffe0e0" stroke="#cc4444" rx="6"/>
+  <text x="460" y="183" text-anchor="middle" font-size="14" fill="#333">Concat</text>
+  <text x="460" y="203" text-anchor="middle" font-size="11" fill="#777">拼回 d_model</text>
+  <line x1="330" y1="63"  x2="400" y2="165" stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="330" y1="133" x2="400" y2="178" stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="330" y1="223" x2="400" y2="195" stroke="#555" marker-end="url(#arrow2)"/>
+  <line x1="330" y1="293" x2="400" y2="210" stroke="#555" marker-end="url(#arrow2)"/>
+
+  <!-- Wo -->
+  <rect x="580" y="150" width="120" height="76" fill="#e2f0d9" stroke="#5a9e3a" rx="6"/>
+  <text x="640" y="183" text-anchor="middle" font-size="14" fill="#333">·Wo</text>
+  <text x="640" y="203" text-anchor="middle" font-size="11" fill="#777">输出 (n, d_model)</text>
+  <line x1="520" y1="188" x2="580" y2="188" stroke="#555" marker-end="url(#arrow2)"/>
+
+  <rect x="0" y="352" width="760" height="28" fill="#2f8f3e"/>
+  <text x="380" y="371" text-anchor="middle" font-size="13" fill="#fff">MultiHead = Concat(head₁,…,head_h)·Wo ；每头维度 d_model/h，总计算量≈单头</text>
+</svg>

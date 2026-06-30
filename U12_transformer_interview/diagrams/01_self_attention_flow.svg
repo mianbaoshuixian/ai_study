@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="360" viewBox="0 0 760 360" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="758" height="358" fill="#ffffff" stroke="#2f8f3e" stroke-width="2" rx="6"/>
+
+  <!-- input -->
+  <rect x="30" y="150" width="90" height="56" fill="#fff3cd" stroke="#caa000" rx="6"/>
+  <text x="75" y="175" text-anchor="middle" font-size="15" fill="#333">输入 X</text>
+  <text x="75" y="195" text-anchor="middle" font-size="11" fill="#777">(n, d)</text>
+
+  <!-- Wq Wk Wv -->
+  <rect x="170" y="40" width="100" height="48" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+  <text x="220" y="68" text-anchor="middle" font-size="14" fill="#333">Q = X·Wq</text>
+  <rect x="170" y="156" width="100" height="48" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+  <text x="220" y="184" text-anchor="middle" font-size="14" fill="#333">K = X·Wk</text>
+  <rect x="170" y="272" width="100" height="48" fill="#d6e4ff" stroke="#3366cc" rx="6"/>
+  <text x="220" y="300" text-anchor="middle" font-size="14" fill="#333">V = X·Wv</text>
+
+  <line x1="120" y1="170" x2="170" y2="64"  stroke="#555" marker-end="url(#arrow)"/>
+  <line x1="120" y1="178" x2="170" y2="180" stroke="#555" marker-end="url(#arrow)"/>
+  <line x1="120" y1="186" x2="170" y2="296" stroke="#555" marker-end="url(#arrow)"/>
+
+  <!-- scores -->
+  <rect x="330" y="98" width="140" height="56" fill="#ffe0e0" stroke="#cc4444" rx="6"/>
+  <text x="400" y="122" text-anchor="middle" font-size="14" fill="#333">QKᵀ / √dk</text>
+  <text x="400" y="142" text-anchor="middle" font-size="11" fill="#777">scores (n, n)</text>
+  <line x1="270" y1="64"  x2="330" y2="118" stroke="#555" marker-end="url(#arrow)"/>
+  <line x1="270" y1="180" x2="330" y2="135" stroke="#555" marker-end="url(#arrow)"/>
+
+  <!-- softmax -->
+  <rect x="510" y="98" width="120" height="56" fill="#e2f0d9" stroke="#5a9e3a" rx="6"/>
+  <text x="570" y="122" text-anchor="middle" font-size="14" fill="#333">softmax</text>
+  <text x="570" y="142" text-anchor="middle" font-size="11" fill="#777">权重 (n, n)</text>
+  <line x1="470" y1="126" x2="510" y2="126" stroke="#555" marker-end="url(#arrow)"/>
+
+  <!-- weighted sum -->
+  <rect x="510" y="248" width="120" height="56" fill="#fff3cd" stroke="#caa000" rx="6"/>
+  <text x="570" y="272" text-anchor="middle" font-size="13" fill="#333">加权求和·V</text>
+  <text x="570" y="292" text-anchor="middle" font-size="11" fill="#777">输出 (n, d)</text>
+  <line x1="570" y1="154" x2="570" y2="248" stroke="#555" marker-end="url(#arrow)"/>
+  <line x1="270" y1="296" x2="510" y2="282" stroke="#555" marker-end="url(#arrow)"/>
+
+  <rect x="0" y="334" width="760" height="26" fill="#2f8f3e"/>
+  <text x="380" y="352" text-anchor="middle" font-size="13" fill="#fff">Attention(Q,K,V) = softmax(QKᵀ/√dk)·V</text>
+</svg>
