@@ -2,7 +2,7 @@
 
 > 面向：算法岗 / 大模型应用开发岗的中文技术面试。
 > 用法：每题包含【考点 / 出题意图 / 详细解题过程 / 答题思路】四部分。先盖住答案自述，再对照。
-> 配图：`diagrams/` 目录下 5 张 SVG，风格对齐尚硅谷《大模型技术之 NLP》课件（绿框 + 色块流程图）。
+> 配图与逐步图解见配套的「详尽讲稿版」`transformer_interview_detailed.md`（内联 SVG）。
 
 ---
 
@@ -35,7 +35,7 @@ Transformer 是 2024 年以后**算法岗与大模型岗的绝对核心八股**�
 5. **softmax 归一化**：对每一行做 softmax，得到权重矩阵 `(n, n)`，每行和为 1。
 6. **加权求和**：`output = weights·V`，形状 `(n, d_v)`，即每个位置融合全序列信息后的新表示。
 
-完整公式：`Attention(Q,K,V) = softmax(QKᵀ/√dk)·V`。配图见 `diagrams/01_self_attention_flow.svg`。
+完整公式：`Attention(Q,K,V) = softmax(QKᵀ/√dk)·V`。逐步图解见详尽版 Q1。
 
 **【答题思路】** 边写公式边报形状（`(n,d)→(n,n)→(n,d)`），并用「Q找对象 / K判断匹配 / V提供内容」这组比喻收尾。主动补一句「缩放和 Mask 是两个易被追问的点」，引导面试官往你准备好的方向问。
 
@@ -85,7 +85,7 @@ Transformer 是 2024 年以后**算法岗与大模型岗的绝对核心八股**�
 
 - **目的**：单头注意力只能学一种关系模式；语言里同时存在语法、语义、指代、共现等多种依赖。多头用 h 组独立的 `Wq/Wk/Wv` 投影，让不同头各自关注不同子空间的关系，最后拼接融合，提升表达能力（类比 CNN 多通道）。
 - **为什么降维**：每个头的维度取 `d_model/h`，h 个头拼接后恰好还原为 `d_model`。这样**总计算量与参数量约等于单头全维**，用几乎相同的成本换来了多视角能力。
-- **流程**：拆分维度 → h 个头并行算 Scaled Dot-Product Attention → 沿特征维拼接 → 乘 `Wo` 融合输出。公式 `MultiHead = Concat(head₁..head_h)·Wo`。配图 `diagrams/02_multihead.svg`。
+- **流程**：拆分维度 → h 个头并行算 Scaled Dot-Product Attention → 沿特征维拼接 → 乘 `Wo` 融合输出。公式 `MultiHead = Concat(head₁..head_h)·Wo`。
 
 **【答题思路】** 「多头 = 多个低维子空间并行 + 拼接融合」，强调降维是为了「在不增加计算量的前提下获得多视角」。结尾点出 `Wo` 的融合作用，很多人会漏。
 
@@ -117,7 +117,7 @@ Transformer 是 2024 年以后**算法岗与大模型岗的绝对核心八股**�
 **【详细解题过程】**
 
 - **Padding Mask（填充掩码）**：屏蔽 `<pad>` 位置，避免注意力关注无意义填充。形状 `(b, seq_len)`，Encoder/Decoder 只要有 PAD 都需要。实现：把 PAD 列的分数置 `-∞`。
-- **Look-Ahead Mask（因果/未来掩码）**：只用于 Decoder 的 self-attention。为了让训练时并行预测每个位置，又不泄露未来词，把分数矩阵的**上三角（未来位置）置 -∞**，形成下三角可见结构。配图 `diagrams/03_causal_mask.svg`。
+- **Look-Ahead Mask（因果/未来掩码）**：只用于 Decoder 的 self-attention。为了让训练时并行预测每个位置，又不泄露未来词，把分数矩阵的**上三角（未来位置）置 -∞**，形成下三角可见结构。
 - 二者都通过「置 -∞ → softmax 后趋 0 → 加权和几乎不含被屏蔽信息」生效，常叠加使用。
 
 **【答题思路】** 用一句话点破动机：「并行训练 + 自回归约束」的矛盾靠 Look-Ahead Mask 解决；PAD Mask 是处理变长 batch 的。配合下三角图最直观。
@@ -136,7 +136,7 @@ Transformer 是 2024 年以后**算法岗与大模型岗的绝对核心八股**�
 - Decoder 每层有一个 **Cross-Attention 子层**：
   - **Q 来自 Decoder**（当前生成状态，经过 Masked Self-Attn 后的表示）；
   - **K、V 来自 Encoder 的 memory**（整个源序列上下文）。
-- 即「用当前要生成的词去询问源句哪些位置最相关」，本质等价于 Seq2Seq 中的 Attention 机制，只是放进了 Transformer 框架。配图 `diagrams/04_encoder_decoder.svg`。
+- 即「用当前要生成的词去询问源句哪些位置最相关」，本质等价于 Seq2Seq 中的 Attention 机制，只是放进了 Transformer 框架。
 
 **【答题思路】** 死记一句：「Cross-Attn 的 Q 来自解码端，K/V 来自编码端」。再点明它就是 U10/U11 学的 Seq2Seq Attention 的「Transformer 版本」，体现知识贯通。
 
@@ -150,7 +150,7 @@ Transformer 是 2024 年以后**算法岗与大模型岗的绝对核心八股**�
 
 **【详细解题过程】**
 
-- **方向差异**：BatchNorm 沿 batch 维（对每个特征跨样本）归一；LayerNorm 沿特征维（对单个 token 的所有特征）归一。配图 `diagrams/05_layernorm_vs_batchnorm.svg`。
+- **方向差异**：BatchNorm 沿 batch 维（对每个特征跨样本）归一；LayerNorm 沿特征维（对单个 token 的所有特征）归一。
 - **为什么 NLP 选 LN**：
   1. **变长序列**：句子长度不一，不同位置 token 语义分布不同，对位置维做 BN 理论上不合理；
   2. **batch 敏感**：BN 依赖较大 batch 估计稳定统计量，NLP 受显存限制 batch 常较小，BN 统计量不稳；
