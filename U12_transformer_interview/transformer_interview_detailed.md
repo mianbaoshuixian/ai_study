@@ -253,7 +253,7 @@ Var( (q·k) / √dk ) = Var(q·k) / (√dk)² = dk / dk = 1
 
 🗣️ 「除以 √dk 之后，分数的方差稳定回 1，不管 dk 多大都一样平稳。softmax 就回到了那个『梯度健康、能正常学习』的区间。」
 
-🖼️ 对照下图：左边 dk 小、分布窄、softmax 平滑；右边 dk 大、分布宽、出现极大值、softmax 塌成 one-hot、梯度消失。
+对照下图：左边 dk 小、分布窄、softmax 平滑；右边 dk 大、分布宽、出现极大值、softmax 塌成 one-hot、梯度消失。
 
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
   <rect x="1" y="1" width="758" height="418" fill="#ffffff" stroke="#2f8f3e" stroke-width="2" rx="6"/>
@@ -511,9 +511,55 @@ scores = Q · Kᵀ      # (n,dk)·(dk,n) = (n,n)，一次矩阵乘法搞定
 加性注意力：每对 (i,j) 都要过一次小 MLP → 同量级但常数大、并行差
 ```
 
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="330" viewBox="0 0 760 330" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <marker id="arq5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
+  <rect x="1" y="1" width="758" height="328" fill="#ffffff" stroke="#2f8f3e" stroke-width="2" rx="6"/>
+  <text x="380" y="28" text-anchor="middle" font-size="16" fill="#333">点积 vs 加性：能否压成一个大矩阵乘法</text>
+  <!-- additive -->
+  <g transform="translate(40,55)">
+    <text x="150" y="0" text-anchor="middle" font-size="14" fill="#cc4444">加性注意力（Bahdanau）</text>
+    <rect x="40" y="20" width="90" height="36" fill="#fff3cd" stroke="#caa000" rx="5"/><text x="85" y="43" text-anchor="middle" font-size="12">Wq·q</text>
+    <rect x="170" y="20" width="90" height="36" fill="#fff3cd" stroke="#caa000" rx="5"/><text x="215" y="43" text-anchor="middle" font-size="12">Wk·k</text>
+    <rect x="90" y="80" width="120" height="36" fill="#f0e6ff" stroke="#7a4fcf" rx="5"/><text x="150" y="103" text-anchor="middle" font-size="12">相加 + tanh</text>
+    <rect x="90" y="140" width="120" height="36" fill="#ffe0e0" stroke="#cc4444" rx="5"/><text x="150" y="163" text-anchor="middle" font-size="12">vᵀ 压成分数</text>
+    <line x1="85" y1="56" x2="130" y2="80" stroke="#555" marker-end="url(#arq5)"/>
+    <line x1="215" y1="56" x2="170" y2="80" stroke="#555" marker-end="url(#arq5)"/>
+    <line x1="150" y1="116" x2="150" y2="140" stroke="#555" marker-end="url(#arq5)"/>
+    <text x="150" y="205" text-anchor="middle" font-size="11" fill="#cc4444">有 tanh 非线性，每对(i,j)单独算</text>
+    <text x="150" y="225" text-anchor="middle" font-size="11" fill="#cc4444">→ 无法压成一个大矩阵乘 → GPU 慢</text>
+  </g>
+  <!-- dot product -->
+  <g transform="translate(420,55)">
+    <text x="150" y="0" text-anchor="middle" font-size="14" fill="#5a9e3a">点积注意力（Transformer）</text>
+    <rect x="30" y="60" width="80" height="60" fill="#d6e4ff" stroke="#3366cc" rx="5"/><text x="70" y="95" text-anchor="middle" font-size="13">Q</text>
+    <rect x="130" y="60" width="80" height="60" fill="#d6e4ff" stroke="#3366cc" rx="5"/><text x="170" y="95" text-anchor="middle" font-size="13">Kᵀ</text>
+    <rect x="230" y="60" width="80" height="60" fill="#e2f0d9" stroke="#5a9e3a" rx="5"/><text x="270" y="88" text-anchor="middle" font-size="12">scores</text><text x="270" y="106" text-anchor="middle" font-size="10" fill="#777">(n,n)</text>
+    <text x="120" y="97" font-size="16" fill="#333">·</text>
+    <line x1="210" y1="90" x2="230" y2="90" stroke="#555" marker-end="url(#arq5)"/>
+    <text x="150" y="160" text-anchor="middle" font-size="11" fill="#5a9e3a">一次矩阵乘法搞定全部分数</text>
+    <text x="150" y="180" text-anchor="middle" font-size="11" fill="#5a9e3a">→ Tensor Core/cuBLAS 高度优化 → 极快</text>
+  </g>
+  <text x="380" y="315" text-anchor="middle" font-size="12" fill="#2f8f3e">理论复杂度相近，胜负在工程效率：点积=纯矩阵乘，对 GPU 友好</text>
+</svg>
+
 ## 第三步：补充——大维度下为什么还要缩放（约 3 分钟）
 
 🗣️ 「论文里还提到一个细节：当 dk 较小时，点积和加性效果差不多；但 dk 较大时，**不缩放的点积**会因为方差过大（见 Q2）而效果变差，甚至不如加性。所以 Transformer 的选择是『点积 + √dk 缩放』，既要点积的速度，又用缩放补上它在高维下的稳定性短板。」
+
+📐 换个角度理解两者的『参数』差异：
+
+```
+加性注意力：打分函数里带 Wq、Wk、v 三组可学习参数 + tanh 非线性
+           → 表达力强，但每个 (i,j) 对都要过这套小网络，算不动大 batch
+点积注意力：打分函数本身 0 参数（Q/K 的投影权重在注意力之外）
+           → 打分阶段就是纯 Q·Kᵀ，天然可批量化
+```
+
+🗣️ 「所以可以这么记：加性注意力把『复杂度』放在了打分函数里（带非线性和参数），换来表达力；点积注意力把打分函数做到极简（纯点积），把复杂度让给了『可被 GPU 加速的矩阵乘法』，换来速度。Transformer 选后者，因为它要堆很深、要吃大规模数据，速度是第一优先级。」
 
 ## 第四步：高频追问与陷阱（约 3 分钟）
 
