@@ -53,6 +53,8 @@ desktop.ini
 *.log
 *.tmp
 .cache/
+U13_policy_gradient/artifacts/
+U13_policy_gradient/src/artifacts/
 
 # ===== 测试 / 覆盖率 =====
 .pytest_cache/
@@ -67,6 +69,4 @@ work/
 
 # ===== AI 助手临时工作目录 =====
 .comate/
-
-
 
